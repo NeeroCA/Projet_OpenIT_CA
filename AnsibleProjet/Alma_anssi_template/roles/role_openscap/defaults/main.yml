@@ -1,0 +1,73 @@
+---
+# Defaults file for role_openscap
+
+# Package variables
+# These variables define the names of the required packages for OpenSCAP and its components
+openscap_package_name_debian: "libopenscap8"  # Name of the OpenSCAP package on Debian
+openscap_package_name_redhat: "openscap-scanner"  # Name of the OpenSCAP package on RedHat
+openscap_package_name_suse: "openscap-scanner"  # Name of the OpenSCAP package on SUSE
+ssg_package_name_debian: "ssg-debderived"    # Name of the SCAP Security Guide package on Debian
+ssg_package_name_redhat: "scap-security-guide"    # Name of the SCAP Security Guide package on RedHat
+ssg_package_name_suse: "scap-security-guide"    # Name of the SCAP Security Guide package on SUSE
+ssg_extra_packages_redhat:
+  - "openscap"
+  - "openscap-utils"
+unzip_package_name: "unzip"                # Name of the unzip package
+
+# Command variables
+# Command to check the OpenSCAP version
+openscap_version_command: "oscap -V"
+
+# SCAP Security Guide related variables
+# These variables define the version, URL, and directory structure for downloading and storing SCAP Security Guide files
+ssg_version: "0.1.69"  # SCAP Security Guide version
+ssg_url: "https://github.com/ComplianceAsCode/content/releases/download/v{{ ssg_version }}/scap-security-guide-{{ ssg_version }}.zip" # URL SCAP Security Guide
+ssg_content_directory: "/usr/share/xml/scap/ssg/content/"  # Directory where SCAP content will be stored
+ssg_file_check: ".scap_security_guide_installed"  # Marker file to check if SCAP content has already been installed
+
+# SCAP Guide files per OS distribution and version
+# These mappings define the default SCAP XML guide files for specific distributions and versions
+ssg_guide_files:
+  Ubuntu:
+    "16": "scap-security-guide-{{ ssg_version }}/ssg-ubuntu1604-ds-1.2.xml"
+    "18": "scap-security-guide-{{ ssg_version }}/ssg-ubuntu1804-ds-1.2.xml"
+    "20": "scap-security-guide-{{ ssg_version }}/ssg-ubuntu2004-ds-1.2.xml"
+    "22": "scap-security-guide-{{ ssg_version }}/ssg-ubuntu2204-ds-1.2.xml"
+  RedHat:
+    "7": "scap-security-guide-{{ ssg_version }}/ssg-rhel7-ds-1.2.xml"
+    "8": "scap-security-guide-{{ ssg_version }}/ssg-rhel8-ds-1.2.xml"
+    "9": "scap-security-guide-{{ ssg_version }}/ssg-rhel9-ds-1.2.xml"
+  CentOS:
+    "7": "scap-security-guide-{{ ssg_version }}/ssg-centos7-ds-1.2.xml"
+    "8": "scap-security-guide-{{ ssg_version }}/ssg-centos8-ds-1.2.xml"
+    "9": "ssg-cs9-ds.xml"
+  Rocky:
+    "8": "scap-security-guide-{{ ssg_version }}/ssg-centos8-ds-1.2.xml"
+    "9": "scap-security-guide-{{ ssg_version }}/ssg-cs9-ds-1.2.xml"
+  AlmaLinux:
+    "8": "scap-security-guide-{{ ssg_version }}/ssg-centos8-ds-1.2.xml"
+    "9": "ssg-almalinux9-ds.xml"
+  Fedora:
+    "8": "scap-security-guide-{{ ssg_version }}/ssg-centos8-ds-1.2.xml"
+    "9": "scap-security-guide-{{ ssg_version }}/ssg-cs9-ds-1.2.xml"
+  Debian:
+    "10": "scap-security-guide-{{ ssg_version }}/ssg-debian10-ds-1.2.xml"
+    "11": "scap-security-guide-{{ ssg_version }}/ssg-debian11-ds-1.2.xml"
+  SUSE:
+    "12": "scap-security-guide-{{ ssg_version }}/ssg-sle12-ds-1.2.xml"
+    "15": "scap-security-guide-{{ ssg_version }}/ssg-sle15-ds-1.2.xml"
+
+##### TODO: Make the SCAP guide file overwritable using host/group_vars for flexibility
+
+# SCAP Profile variables
+# Default SCAP profile to use during scans. This can be customized per OS or host.
+ssg_profile: "xccdf_org.ssgproject.content_profile_cis_level1_server"  # Default SCAP profile
+
+##### TODO: Define default profile per ansible_distribution_version
+
+# Reporting variables
+# These variables define where the scan reports will be stored and their naming convention
+report_directory: "/var/log/openscap/reports"  # Directory on the master node to store reports
+report_filename: "{{ inventory_hostname }}-{{ ansible_date_time.iso8601 }}-report.html"  # Filename pattern for reports (based on hostname and timestamp)
+report_storage_server: "localhost"  # Server where reports will be stored
+...

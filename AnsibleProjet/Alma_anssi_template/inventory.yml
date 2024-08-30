@@ -1,0 +1,6 @@
+all:
+  hosts:
+    localhost:
+      ansible_connection: local
+    alma:
+      ansible_host: 10.0.2.15
