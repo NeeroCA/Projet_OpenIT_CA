@@ -1,6 +1,6 @@
 ---
 - name: role_openscap
-  src: https://github.com/owen282000/role_openscap.git
+  src: https://github.com/NeeroCA/Openscap.git
   scm: git
   version: main
 - name: anssi_bp28_minimal
